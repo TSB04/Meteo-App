@@ -6,6 +6,8 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import App from "./screens/index";
 
+
+
 const theme = {
   ...DefaultTheme,
   colors: {
