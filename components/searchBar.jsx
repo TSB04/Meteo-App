@@ -23,7 +23,7 @@ const CustomSearchbar = ({ onSearch }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: "5%",
+    padding: "2.5%",
   },
 });
 
