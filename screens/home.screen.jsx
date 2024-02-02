@@ -23,7 +23,7 @@ const HomeScreen = () => {
     background: {
       flex: 1,
       resizeMode: "cover", // Make sure the background image covers the entire container
-      alignItems: "center",
+      // alignItems: "center",
     },
     overlay: {
       flex: 1,
@@ -33,7 +33,6 @@ const HomeScreen = () => {
       paddingHorizontal: 20,
       flexDirection: "column",
       gap: 2,
-      width: "40%",
     },
     globalWeatherInfo: {
       flex: 1,
@@ -43,7 +42,6 @@ const HomeScreen = () => {
       paddingHorizontal: 20,
       flexDirection: "column",
       gap: 2,
-      width: "70%",
     },
     surface: {
       padding: 5,
@@ -185,7 +183,7 @@ const HomeScreen = () => {
                 <Card.Content style={{ flexDirection: "row" }}>
                   <Surface style={styles.surface}>
                     <Text style={{ ...styles.weatherInfoText, color: "white" }}>
-                      Temp:{" "}
+                      Temp:
                       {kelvinToCelsius(
                         averageTemperature(
                           weather?.main?.temp_max,
@@ -193,10 +191,10 @@ const HomeScreen = () => {
                         )
                       )}
                       °C
-                    </Text>{" "}
+                    </Text>
                     <Text style={{ ...styles.weatherInfoText, color: "white" }}>
                       Feels like: {kelvinToCelsius(weather?.main?.feels_like)}°C
-                    </Text>{" "}
+                    </Text>
                   </Surface>
                   <Surface style={styles.surface}>
                     <View style={styles.weatherInfoItem}>
@@ -261,83 +259,8 @@ const HomeScreen = () => {
                 </Card.Actions>
               </Card>
 
-              {/* <>
-                <Text style={styles.title}>{cityDetails?.name}</Text>
-
-                <View style={styles.weatherInfoContainer}>
-                  <View style={styles.weatherInfoItem}>
-                    <Text style={styles.weatherInfoText}>
-                      Temp:{" "}
-                      {kelvinToCelsius(
-                        averageTemperature(
-                          weather?.main?.temp_max,
-                          weather?.main?.temp_min
-                        )
-                      )}
-                      °C
-                    </Text>
-                  </View>
-                  <View style={styles.weatherInfoItem}>
-                    <Text style={styles.weatherInfoText}>
-                      Feels like:{kelvinToCelsius(weather?.main?.feels_like)}°C
-                    </Text>
-                  </View>
-                </View>
-              </>
-
-              <View style={styles.weatherInfoContainer}>
-                <View style={styles.weatherInfoItem}>
-                  <Icon
-                    name="thermometer-three-quarters"
-                    style={styles.weatherIcon}
-                  />
-                  <Text style={styles.weatherInfoText}>
-                    Max: {kelvinToCelsius(weather?.main?.temp_max)}°C
-                  </Text>
-                </View>
-                <View style={styles.weatherInfoItem}>
-                  <Icon name="thermometer-quarter" style={styles.weatherIcon} />
-                  <Text style={styles.weatherInfoText}>
-                    Min: {kelvinToCelsius(weather?.main?.temp_min)}°C
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.weatherInfoContainer}>
-                <View style={styles.weatherInfoItem}>
-                  <Icon name="tint" style={styles.weatherIcon} />
-                  <Text style={styles.weatherInfoText}>
-                    Humidity: {weather?.main?.humidity}%
-                  </Text>
-                </View>
-                <View style={styles.weatherInfoItem}>
-                  <Icon2 name="wind" style={styles.weatherIcon} />
-                  <Text style={styles.weatherInfoText}>
-                    Wind Speed: {weather?.wind?.speed} m/s
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.weatherInfoContainer}>
-                <View style={styles.weatherInfoItem}>
-                  <Icon2 name="sunrise" style={styles.weatherIcon} />
-                  <Text style={styles.weatherInfoText}>
-                    Sunrise: {formatTime(weather?.sys?.sunrise)}
-                  </Text>
-                </View>
-                <View style={styles.weatherInfoItem}>
-                  <Icon2 name="sunset" style={styles.weatherIcon} />
-                  <Text style={styles.weatherInfoText}>
-                    Sunset: {formatTime(weather?.sys?.sunset)}
-                  </Text>
-                </View>
-              </View>
-
-              <Text style={styles.description}>
-                {weather?.weather[0]?.description}
-              </Text> */}
             </View>
-            <View>forcast for the week end</View>
+            {/* <View>forcast for the week end</View> */}
           </SafeAreaView>
         )}
       </ImageBackground>
