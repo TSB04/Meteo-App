@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Searchbar } from "react-native-paper";
+import { Searchbar, useTheme } from "react-native-paper";
 
 const CustomSearchbar = ({ onSearch }) => {
+  const theme = useTheme();
+  const styles = StyleSheet.create({
+    container: {
+      padding: "5%",
+      backgroundColor: theme.colors.tertiary
+    },
+  });
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
@@ -21,10 +28,6 @@ const CustomSearchbar = ({ onSearch }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: "2.5%",
-  },
-});
+
 
 export default CustomSearchbar;

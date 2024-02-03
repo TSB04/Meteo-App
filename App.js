@@ -1,11 +1,7 @@
-import * as React from "react";
-import {
-  MD3LightTheme as DefaultTheme,
-  PaperProvider,
-} from "react-native-paper";
+import React from "react";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import App from "./screens/index";
-
 
 
 const theme = {
@@ -14,6 +10,7 @@ const theme = {
     ...DefaultTheme.colors,
     primary: "#2E335A",
     secondary: "#102B33",
+    tertiary: "transparent"
   },
 };
 
