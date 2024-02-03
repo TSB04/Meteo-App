@@ -6,7 +6,6 @@ import CustomCard from "../components/card";
 import CardContainer from "../components/cardContainer";
 import Background from "../components/background";
 import MainCard from "../components/mainCard";
-import NavBar from "../components/navBar";
 
 const HomeScreen = () => {
   const [cityDetails, setCityDetails] = useState(null);
@@ -79,7 +78,6 @@ const HomeScreen = () => {
           </CardContainer>
         </>
       )}
-      <NavBar />
     </Background>
   );
 };
