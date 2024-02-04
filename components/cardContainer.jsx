@@ -1,9 +1,9 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const CardContainer = ({ children }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView
         horizontal
         scrollEventThrottle={16}
@@ -16,5 +16,13 @@ const CardContainer = ({ children }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "rgba(55, 155, 205, 0.3)", 
+    borderWidth: 1, 
+    borderColor: "grey",
+  },
+})
 
 export default CardContainer;

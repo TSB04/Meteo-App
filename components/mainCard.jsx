@@ -1,24 +1,45 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button, Card, Surface } from "react-native-paper";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Card, Surface, IconButton } from "react-native-paper";
+import Icon1 from "react-native-vector-icons/FontAwesome";
 import Icon2 from "react-native-vector-icons/Feather";
-import dataConversion from "../services/dataConversion"
-const MainCard = ({ weatherForcast, weather, cityName }) => {
-  
+import dataConversion from "../services/dataConversion";
+import cityService from "../services/cityService";
+
+const MainCard = ({
+  description,
+  temp,
+  feelsLike,
+  max,
+  min,
+  humidity,
+  windSpeed,
+  cityName,
+  iconCode,
+  sunrise,
+  sunset,
+}) => {
+  const icon = cityService.getCityWeatherIcon(iconCode);
+
+  const handleSaveClick = () => {
+    cityService.addCityToFavorites(cityName);
+  };
+
   return (
     <Card
       style={{
-        backgroundColor: "transparent",
+        backgroundColor: "red",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "rgba(55, 155, 205, 0.1)",
+        borderRadius: 0,
       }}
     >
       <Surface style={styles.Surface2}>
         <Card.Title
           title={cityName}
-          subtitle={weatherForcast?.[0]?.weather?.[0]?.description}
+          subtitle={description}
           titleStyle={{
             color: "white",
             fontSize: 20,
@@ -39,10 +60,9 @@ const MainCard = ({ weatherForcast, weather, cityName }) => {
                 height: 60,
               }}
             >
-              {/* <Avatar.Icon {...props} icon="folder" fontSize={20} /> */}
-              <Icon2
-                name="cloud" // Example icon name, replace with dynamic value if needed
-                style={{ fontSize: 50, color: "white" }} // Adjust styling as needed
+              <Image
+                source={{ uri: icon }}
+                style={{ width: 120, height: 100 }}
               />
             </View>
           )}
@@ -52,40 +72,42 @@ const MainCard = ({ weatherForcast, weather, cityName }) => {
       <Card.Content style={{ flexDirection: "row", alignItems: "center" }}>
         <Surface style={styles.surface}>
           <Text style={styles.weatherInfoText}>
-            Temp: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp)}°C
+            Temp: {dataConversion.kelvinToCelsius(temp)}°C
           </Text>
           <Text style={styles.weatherInfoText}>
-            Feels like: {dataConversion.kelvinToCelsius(weather?.main?.feels_like)}°C
+            Feels like: {dataConversion.kelvinToCelsius(feelsLike)}°C
           </Text>
         </Surface>
         <Surface style={styles.surface}>
           <View style={styles.weatherInfoItem}>
-            <Icon
+            <Icon1
               name="thermometer-three-quarters"
               style={styles.weatherIcon}
             />
             <Text style={styles.weatherInfoText}>
-              Max: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp_max)}°C
+              Max: {dataConversion.kelvinToCelsius(max)}
+              °C
             </Text>
           </View>
           <View style={styles.weatherInfoItem}>
-            <Icon name="thermometer-quarter" style={styles.weatherIcon} />
+            <Icon1 name="thermometer-quarter" style={styles.weatherIcon} />
             <Text style={styles.weatherInfoText}>
-              Min: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp_min)}°C
+              Min: {dataConversion.kelvinToCelsius(min)}
+              °C
             </Text>
           </View>
         </Surface>
         <Surface style={styles.surface}>
           <View style={styles.weatherInfoItem}>
-            <Icon name="tint" style={styles.weatherIcon} />
+            <Icon1 name="tint" style={styles.weatherIcon} />
             <Text style={styles.weatherInfoText}>
-              {""} {weatherForcast?.[0]?.main?.humidity}%
+              {""} {humidity}%
             </Text>
           </View>
           <View style={styles.weatherInfoItem}>
             <Icon2 name="wind" style={styles.weatherIcon} />
             <Text style={styles.weatherInfoText}>
-              {""} {weatherForcast?.[0]?.wind?.speed} m/s
+              {""} {windSpeed} m/s
             </Text>
           </View>
         </Surface>
@@ -95,19 +117,24 @@ const MainCard = ({ weatherForcast, weather, cityName }) => {
         <View style={styles.weatherInfoItem}>
           <Icon2 name="sunrise" style={styles.weatherIcon} />
           <Text style={styles.weatherInfoText}>
-            Sunrise: {dataConversion.formatTime(weather?.sys?.sunrise)}
+            Sunrise: {dataConversion.formatTime(sunrise)}
           </Text>
         </View>
         <View style={styles.weatherInfoItem}>
           <Icon2 name="sunset" style={styles.weatherIcon} />
           <Text style={styles.weatherInfoText}>
-            Sunset: {dataConversion.formatTime(weather?.sys?.sunset)}
+            Sunset: {dataConversion.formatTime(sunset)}
           </Text>
         </View>
       </Surface>
 
       <Card.Actions>
-        <Button>+</Button>
+        <IconButton
+          icon="bookmark-plus"
+          iconColor="white"
+          size={30}
+          onPress={handleSaveClick}
+        />
       </Card.Actions>
     </Card>
   );

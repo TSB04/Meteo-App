@@ -2,7 +2,7 @@ import React from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import App from "./screens/index";
-
+import { StatusBar } from "react-native";
 
 const theme = {
   ...DefaultTheme,
@@ -10,7 +10,7 @@ const theme = {
     ...DefaultTheme.colors,
     primary: "#2E335A",
     secondary: "#102B33",
-    tertiary: "transparent"
+    tertiary: "transparent",
   },
 };
 

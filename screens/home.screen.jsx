@@ -7,7 +7,7 @@ import CardContainer from "../components/cardContainer";
 import Background from "../components/background";
 import MainCard from "../components/mainCard";
 
-const HomeScreen = () => {
+function HomeScreen() {
   const [cityDetails, setCityDetails] = useState(null);
   const [weather, setWeather] = useState(null);
   const [weatherForcast, setWeatherForcast] = useState(null);
@@ -37,10 +37,7 @@ const HomeScreen = () => {
 
   return (
     <Background>
-      <CustomSearchbar
-        onSearch={handleOnSearch}
-        style={{ backgroundColor: "transparent" }}
-      />
+      <CustomSearchbar onSearch={handleOnSearch} />
 
       {loading && <ActivityIndicator color="white" size="large" />}
 
@@ -48,8 +45,16 @@ const HomeScreen = () => {
         <>
           <MainCard
             cityName={cityDetails?.name}
-            weatherForcast={weatherForcast}
-            weather={weather}
+            description={weatherForcast?.[0]?.weather[0]?.description}
+            temp={weatherForcast?.[0]?.main?.temp}
+            feelsLike={weatherForcast?.[0]?.main?.feels_like}
+            max={weatherForcast?.[0]?.main?.temp_max}
+            min={weatherForcast?.[0]?.main?.temp_min}
+            humidity={weatherForcast?.[0]?.main?.humidity}
+            windSpeed={weatherForcast?.[0]?.wind?.speed}
+            iconCode={weatherForcast?.[0]?.weather[0]?.icon}
+            sunrise={weather?.sys?.sunrise}
+            sunset={weather?.sys?.sunset}
           />
 
           <CardContainer>
@@ -72,6 +77,7 @@ const HomeScreen = () => {
                     date={dataForDate.dt_txt}
                     temp={dataForDate.main.temp}
                     humidity={dataForDate.main.humidity}
+                    iconCode={dataForDate.weather[0].icon}
                   />
                 );
               })}
@@ -80,6 +86,6 @@ const HomeScreen = () => {
       )}
     </Background>
   );
-};
+}
 
 export default HomeScreen;

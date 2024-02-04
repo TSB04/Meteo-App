@@ -6,7 +6,7 @@ class DataConversion {
   };
 
   formatTime = (timestamp) => {
-    date = new Date(timestamp * 1000);
+   const  date = new Date(timestamp * 1000);
     return date.toLocaleTimeString();
   };
 
