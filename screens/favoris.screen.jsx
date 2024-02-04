@@ -77,7 +77,7 @@ const FavorisScreen = () => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "rgba(150, 150,150, 0.8)" }}>
       <View style={{ flex: 1 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           Favorite Cities

@@ -6,7 +6,8 @@ const CustomSearchbar = ({ onSearch }) => {
   const theme = useTheme();
   const styles = StyleSheet.create({
     container: {
-      padding: "8%",
+      padding: "5%",
+      paddingTop: 50,
       backgroundColor: theme.colors.tertiary
     },
   });

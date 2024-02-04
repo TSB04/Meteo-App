@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { Card, Surface, IconButton } from "react-native-paper";
 import Icon1 from "react-native-vector-icons/FontAwesome";
 import Icon2 from "react-native-vector-icons/Feather";
+import Icon3 from "react-native-vector-icons/FontAwesome6";
 import dataConversion from "../services/dataConversion";
 import cityService from "../services/cityService";
 
@@ -32,8 +33,8 @@ const MainCard = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(55, 155, 205, 0.1)",
-        borderRadius: 0,
+        backgroundColor: "rgba(55, 155, 205, 0.2)",
+        padding: 0
       }}
     >
       <Surface style={styles.Surface2}>
@@ -42,7 +43,7 @@ const MainCard = ({
           subtitle={description}
           titleStyle={{
             color: "white",
-            fontSize: 20,
+            fontSize: 26,
             textAlign: "center",
           }}
           subtitleStyle={{
@@ -56,8 +57,8 @@ const MainCard = ({
                 justifyContent: "center",
                 alignItems: "center",
                 marginLeft: 50,
-                width: 60,
-                height: 60,
+                width: 80,
+                height: 80,
               }}
             >
               <Image
@@ -71,12 +72,12 @@ const MainCard = ({
 
       <Card.Content style={{ flexDirection: "row", alignItems: "center" }}>
         <Surface style={styles.surface}>
-          <Text style={styles.weatherInfoText}>
-            Temp: {dataConversion.kelvinToCelsius(temp)}°C
-          </Text>
-          <Text style={styles.weatherInfoText}>
-            Feels like: {dataConversion.kelvinToCelsius(feelsLike)}°C
-          </Text>
+            <Text style={styles.weatherInfoText}>
+              Temp: {dataConversion.kelvinToCelsius(temp)}°C
+            </Text>
+            <Text style={styles.weatherInfoText}>
+              Feels like: {dataConversion.kelvinToCelsius(feelsLike)}°C
+            </Text>
         </Surface>
         <Surface style={styles.surface}>
           <View style={styles.weatherInfoItem}>
@@ -99,7 +100,11 @@ const MainCard = ({
         </Surface>
         <Surface style={styles.surface}>
           <View style={styles.weatherInfoItem}>
-            <Icon1 name="tint" style={styles.weatherIcon} />
+            {humidity > 60 ? (
+              <Icon3 name="cloud-showers-water" style={styles.weatherIcon} />
+            ) : (
+              <Icon1 name="tint" style={styles.weatherIcon} />
+            )}
             <Text style={styles.weatherInfoText}>
               {""} {humidity}%
             </Text>
@@ -143,10 +148,10 @@ const MainCard = ({
 const styles = StyleSheet.create({
   surface: {
     padding: 5,
-    height: 70,
+    height: 120,
     width: 120,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     backgroundColor: "transparent",
   },
   Surface2: {
@@ -155,12 +160,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "transparent",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "white",
   },
 
   weatherInfoItem: {
@@ -178,10 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "white",
     marginRight: 5,
-  },
-  description: {
-    fontSize: 16,
-    color: "white",
   },
 });
 

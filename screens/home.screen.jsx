@@ -6,6 +6,7 @@ import CustomCard from "../components/card";
 import CardContainer from "../components/cardContainer";
 import Background from "../components/background";
 import MainCard from "../components/mainCard";
+import { View } from "react-native";
 
 function HomeScreen() {
   const [cityDetails, setCityDetails] = useState(null);
@@ -38,52 +39,53 @@ function HomeScreen() {
   return (
     <Background>
       <CustomSearchbar onSearch={handleOnSearch} />
+      <View style={{flex: 1, justifyContent: "center"}}>
+        {loading && <ActivityIndicator color="white" size="large" />}
 
-      {loading && <ActivityIndicator color="white" size="large" />}
+        {!loading && (
+          <View style={{flex: 1, justifyContent: "space-between"}}>
+            <MainCard
+              cityName={cityDetails?.name}
+              description={weatherForcast?.[0]?.weather[0]?.description}
+              temp={weatherForcast?.[0]?.main?.temp}
+              feelsLike={weatherForcast?.[0]?.main?.feels_like}
+              max={weatherForcast?.[0]?.main?.temp_max}
+              min={weatherForcast?.[0]?.main?.temp_min}
+              humidity={weatherForcast?.[0]?.main?.humidity}
+              windSpeed={weatherForcast?.[0]?.wind?.speed}
+              iconCode={weatherForcast?.[0]?.weather[0]?.icon}
+              sunrise={weather?.sys?.sunrise}
+              sunset={weather?.sys?.sunset}
+            />
 
-      {!loading && (
-        <>
-          <MainCard
-            cityName={cityDetails?.name}
-            description={weatherForcast?.[0]?.weather[0]?.description}
-            temp={weatherForcast?.[0]?.main?.temp}
-            feelsLike={weatherForcast?.[0]?.main?.feels_like}
-            max={weatherForcast?.[0]?.main?.temp_max}
-            min={weatherForcast?.[0]?.main?.temp_min}
-            humidity={weatherForcast?.[0]?.main?.humidity}
-            windSpeed={weatherForcast?.[0]?.wind?.speed}
-            iconCode={weatherForcast?.[0]?.weather[0]?.icon}
-            sunrise={weather?.sys?.sunrise}
-            sunset={weather?.sys?.sunset}
-          />
-
-          <CardContainer>
-            {weatherForcast
-              ?.reduce((uniqueDates, data) => {
-                const date = data.dt_txt.split(" ")[0]; // Extract date part
-                if (!uniqueDates.includes(date)) {
-                  uniqueDates.push(date);
-                }
-                return uniqueDates;
-              }, [])
-              .map((date, index) => {
-                // Find the first data entry for each unique date
-                const dataForDate = weatherForcast.find(
-                  (data) => data.dt_txt.split(" ")[0] === date
-                );
-                return (
-                  <CustomCard
-                    key={index}
-                    date={dataForDate.dt_txt}
-                    temp={dataForDate.main.temp}
-                    humidity={dataForDate.main.humidity}
-                    iconCode={dataForDate.weather[0].icon}
-                  />
-                );
-              })}
-          </CardContainer>
-        </>
-      )}
+            <CardContainer>
+              {weatherForcast
+                ?.reduce((uniqueDates, data) => {
+                  const date = data.dt_txt.split(" ")[0]; // Extract date part
+                  if (!uniqueDates.includes(date)) {
+                    uniqueDates.push(date);
+                  }
+                  return uniqueDates;
+                }, [])
+                .map((date, index) => {
+                  // Find the first data entry for each unique date
+                  const dataForDate = weatherForcast.find(
+                    (data) => data.dt_txt.split(" ")[0] === date
+                  );
+                  return (
+                    <CustomCard
+                      key={index}
+                      date={dataForDate.dt_txt}
+                      temp={dataForDate.main.temp}
+                      humidity={dataForDate.main.humidity}
+                      iconCode={dataForDate.weather[0].icon}
+                    />
+                  );
+                })}
+            </CardContainer>
+          </View>
+        )}
+      </View>
     </Background>
   );
 }

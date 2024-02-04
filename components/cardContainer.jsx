@@ -19,7 +19,8 @@ const CardContainer = ({ children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(55, 155, 205, 0.3)", 
+    padding: 5,
+    backgroundColor: "rgba(55, 155, 205, 0.5)", 
     borderWidth: 1, 
     borderColor: "grey",
   },

@@ -1,9 +1,11 @@
 import React from "react";
 import { Card, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome6";
-import { View, StyleSheet, Image } from "react-native";
+import Icon1 from "react-native-vector-icons/FontAwesome";
+import { View, StyleSheet, ImageBackground, Image } from "react-native";
 import dataConversion from "../services/dataConversion";
 import cityService from "../services/cityService";
+import getBackgroundImage from "../services/backgrdService";
 
 const CustomCard = ({
   date,
@@ -13,6 +15,43 @@ const CustomCard = ({
   city,
   isFavoritesScreen,
 }) => {
+  const styles = StyleSheet.create({
+    card: {
+      margin: 5,
+      padding: isFavoritesScreen ? 20 : 8,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "rgba(255, 255, 255, 0.5)",
+      overflow: "hidden", // Ensure the background image fits within the card
+    },
+    favoriteCard: {
+      // Additional styles for the card in the Favorites screen
+    },
+    favoriteCardContent: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    favoriteDataContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    dataRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 8,
+    },
+    icon: {
+      marginRight: 5,
+      fontSize: 20,
+      color: "white",
+    },
+    text: {
+      fontSize: 16,
+      color: "white",
+    },
+  });
   const weekday = dataConversion.setWeekDay(date);
   let icon = "";
 
@@ -22,24 +61,15 @@ const CustomCard = ({
     console.error("Error getting weather icon:", error);
   }
 
-  const getBackgroundColor = (weatherCode) => {
-    // Define a mapping of weather codes to background colors
-    const colorMap = {
-      // Add your mappings here based on the weather codes
-      // For example:
-      "01d": "rgba(255, 255, 0, 0.3)", // Clear sky (day)
-      "01n": "rgba(0, 0, 255, 0.3)",   // Clear sky (night)
-      // Add more mappings as needed
-    };
-
-    // Return the corresponding color from the map, or a default color
-    return colorMap[weatherCode] || "rgba(55, 55, 255, 0.3)"; // Default color
-  };
-
-  const backgroundColor = isFavoritesScreen ? getBackgroundColor(iconCode) : "rgba(55, 55, 255, 0.3)";
+  const backgroundImage = isFavoritesScreen
+    ? getBackgroundImage(iconCode)
+    : null;
 
   return (
-    <Card style={[styles.card, isFavoritesScreen && styles.favoriteCard, { backgroundColor }]}>
+    <ImageBackground
+      source={backgroundImage}
+      style={[styles.card, isFavoritesScreen && styles.favoriteCard]}
+    >
       <Card.Content
         style={isFavoritesScreen ? styles.favoriteCardContent : null}
       >
@@ -54,50 +84,16 @@ const CustomCard = ({
           </Text>
         </View>
         <View style={styles.dataRow}>
-          <Icon name="cloud-showers-water" style={styles.icon} />
+          {humidity > 60 ? (
+            <Icon name="cloud-showers-water" style={styles.icon} />
+          ) : (
+            <Icon1 name="tint" style={styles.icon} />
+          )}
           <Text style={styles.text}> {humidity}</Text>
         </View>
       </Card.Content>
-    </Card>
+    </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 5,
-    padding: 8,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-  },
-  favoriteCard: {
-    // Additional styles for the card in the Favorites screen
-  },
-  favoriteCardContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  favoriteDataContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  dataRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 8,
-  },
-  icon: {
-    marginRight: 5,
-    fontSize: 20,
-    color: "white",
-  },
-  text: {
-    fontSize: 16,
-    color: "white",
-  },
-});
 
 export default CustomCard;

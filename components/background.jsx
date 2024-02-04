@@ -1,11 +1,13 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
+import getBackgroundImage from "../services/backgrdService";
 
-const Background = ({ children }) => {
+const Background = ({ children, iconCode }) => {
+  
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../assets/night-with-clouds-weather-app-screen-mobile-interface-design-forecast-weather-background-time-concept-vector-banner_87946-4287.avif")}
+        source={getBackgroundImage(iconCode)}
         style={styles.background}
       >
         {children}
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     width: "100%",
     height: "100%",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
 });
 
