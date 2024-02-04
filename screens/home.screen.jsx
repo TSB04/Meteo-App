@@ -6,8 +6,10 @@ import CustomCard from "../components/card";
 import CardContainer from "../components/cardContainer";
 import Background from "../components/background";
 import MainCard from "../components/mainCard";
+import { View } from "react-native";
+import SnackBar from "../components/snackBar";
 
-const HomeScreen = () => {
+function HomeScreen() {
   const [cityDetails, setCityDetails] = useState(null);
   const [weather, setWeather] = useState(null);
   const [weatherForcast, setWeatherForcast] = useState(null);
@@ -36,50 +38,58 @@ const HomeScreen = () => {
   };
 
   return (
-    <Background>
-      <CustomSearchbar
-        onSearch={handleOnSearch}
-        style={{ backgroundColor: "transparent" }}
-      />
+    <Background iconCode={weatherForcast?.[0]?.weather[0]?.icon}>
+      <CustomSearchbar onSearch={handleOnSearch} />
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        {loading && <ActivityIndicator color="white" size="large" />}
 
-      {loading && <ActivityIndicator color="white" size="large" />}
+        {!loading && (
+          <View style={{ flex: 1, justifyContent: "space-between" }}>
+            <MainCard
+              cityName={cityDetails?.name}
+              description={weatherForcast?.[0]?.weather[0]?.description}
+              temp={weatherForcast?.[0]?.main?.temp}
+              feelsLike={weatherForcast?.[0]?.main?.feels_like}
+              max={weatherForcast?.[0]?.main?.temp_max}
+              min={weatherForcast?.[0]?.main?.temp_min}
+              humidity={weatherForcast?.[0]?.main?.humidity}
+              windSpeed={weatherForcast?.[0]?.wind?.speed}
+              iconCode={weatherForcast?.[0]?.weather[0]?.icon}
+              sunrise={weather?.sys?.sunrise}
+              sunset={weather?.sys?.sunset}
+            />
 
-      {!loading && (
-        <>
-          <MainCard
-            cityName={cityDetails?.name}
-            weatherForcast={weatherForcast}
-            weather={weather}
-          />
-
-          <CardContainer>
-            {weatherForcast
-              ?.reduce((uniqueDates, data) => {
-                const date = data.dt_txt.split(" ")[0]; // Extract date part
-                if (!uniqueDates.includes(date)) {
-                  uniqueDates.push(date);
-                }
-                return uniqueDates;
-              }, [])
-              .map((date, index) => {
-                // Find the first data entry for each unique date
-                const dataForDate = weatherForcast.find(
-                  (data) => data.dt_txt.split(" ")[0] === date
-                );
-                return (
-                  <CustomCard
-                    key={index}
-                    date={dataForDate.dt_txt}
-                    temp={dataForDate.main.temp}
-                    humidity={dataForDate.main.humidity}
-                  />
-                );
-              })}
-          </CardContainer>
-        </>
-      )}
+            <CardContainer>
+              {weatherForcast
+                ?.reduce((uniqueDates, data) => {
+                  const date = data.dt_txt.split(" ")[0]; // Extract date part
+                  if (!uniqueDates.includes(date)) {
+                    uniqueDates.push(date);
+                  }
+                  return uniqueDates;
+                }, [])
+                .map((date, index) => {
+                  // Find the first data entry for each unique date
+                  const dataForDate = weatherForcast.find(
+                    (data) => data.dt_txt.split(" ")[0] === date
+                  );
+                  return (
+                    <CustomCard
+                      key={index}
+                      date={dataForDate.dt_txt}
+                      temp={dataForDate.main.temp}
+                      humidity={dataForDate.main.humidity}
+                      iconCode={dataForDate.weather[0].icon}
+                    />
+                  );
+                })}
+            </CardContainer>
+          </View>
+        )}
+      </View>
+      <SnackBar />
     </Background>
   );
-};
+}
 
 export default HomeScreen;

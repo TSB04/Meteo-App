@@ -1,125 +1,175 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button, Card, Surface } from "react-native-paper";
-import Icon from "react-native-vector-icons/FontAwesome";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Card, Surface, IconButton } from "react-native-paper";
+import Icon1 from "react-native-vector-icons/FontAwesome";
 import Icon2 from "react-native-vector-icons/Feather";
-import dataConversion from "../services/dataConversion"
-const MainCard = ({ weatherForcast, weather, cityName }) => {
-  
+import Icon3 from "react-native-vector-icons/FontAwesome6";
+import dataConversion from "../services/dataConversion";
+import cityService from "../services/cityService";
+import SnackBar from "./snackBar";
+
+const MainCard = ({
+  description,
+  temp,
+  feelsLike,
+  max,
+  min,
+  humidity,
+  windSpeed,
+  cityName,
+  iconCode,
+  sunrise,
+  sunset,
+}) => {
+  const icon = cityService.getCityWeatherIcon(iconCode);
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+
+  const handleSaveClick = () => {
+    try {
+      cityService.addCityToFavorites(cityName);
+
+      setSnackBarMessage(`${cityName} added to favorites`);
+      setSnackBarVisible(true);
+    } catch (error) {
+      setSnackBarMessage(error);
+      setSnackBarVisible(true);
+    }
+  };
+
   return (
-    <Card
-      style={{
-        backgroundColor: "transparent",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Surface style={styles.Surface2}>
-        <Card.Title
-          title={cityName}
-          subtitle={weatherForcast?.[0]?.weather?.[0]?.description}
-          titleStyle={{
-            color: "white",
-            fontSize: 20,
-            textAlign: "center",
-          }}
-          subtitleStyle={{
-            color: "white",
-            fontSize: 16,
-            textAlign: "center",
-          }}
-          left={(props) => (
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginLeft: 50,
-                width: 60,
-                height: 60,
-              }}
-            >
-              {/* <Avatar.Icon {...props} icon="folder" fontSize={20} /> */}
-              <Icon2
-                name="cloud" // Example icon name, replace with dynamic value if needed
-                style={{ fontSize: 50, color: "white" }} // Adjust styling as needed
+    <>
+      <SnackBar
+        message={snackBarMessage}
+        setVisible={setSnackBarVisible}
+        visible={snackBarVisible}
+      />
+      <Card
+        style={{
+          backgroundColor: "red",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(55, 155, 205, 0.2)",
+          padding: 0,
+        }}
+      >
+        <Surface style={styles.Surface2}>
+          <Card.Title
+            title={cityName}
+            subtitle={description}
+            titleStyle={{
+              color: "white",
+              fontSize: 26,
+              textAlign: "center",
+            }}
+            subtitleStyle={{
+              color: "white",
+              fontSize: 16,
+              textAlign: "center",
+            }}
+            left={(props) => (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: 50,
+                  width: 80,
+                  height: 80,
+                }}
+              >
+                <Image
+                  source={{ uri: icon }}
+                  style={{ width: 120, height: 100 }}
+                />
+              </View>
+            )}
+          />
+        </Surface>
+
+        <Card.Content style={{ flexDirection: "row", alignItems: "center" }}>
+          <Surface style={styles.surface}>
+            <Text style={styles.weatherInfoText}>
+              Temp: {dataConversion.kelvinToCelsius(temp)}°C
+            </Text>
+            <Text style={styles.weatherInfoText}>
+              Feels like: {dataConversion.kelvinToCelsius(feelsLike)}°C
+            </Text>
+          </Surface>
+          <Surface style={styles.surface}>
+            <View style={styles.weatherInfoItem}>
+              <Icon1
+                name="thermometer-three-quarters"
+                style={styles.weatherIcon}
               />
+              <Text style={styles.weatherInfoText}>
+                Max: {dataConversion.kelvinToCelsius(max)}
+                °C
+              </Text>
             </View>
-          )}
-        />
-      </Surface>
+            <View style={styles.weatherInfoItem}>
+              <Icon1 name="thermometer-quarter" style={styles.weatherIcon} />
+              <Text style={styles.weatherInfoText}>
+                Min: {dataConversion.kelvinToCelsius(min)}
+                °C
+              </Text>
+            </View>
+          </Surface>
+          <Surface style={styles.surface}>
+            <View style={styles.weatherInfoItem}>
+              {humidity > 60 ? (
+                <Icon3 name="cloud-showers-water" style={styles.weatherIcon} />
+              ) : (
+                <Icon1 name="tint" style={styles.weatherIcon} />
+              )}
+              <Text style={styles.weatherInfoText}>
+                {""} {humidity}%
+              </Text>
+            </View>
+            <View style={styles.weatherInfoItem}>
+              <Icon2 name="wind" style={styles.weatherIcon} />
+              <Text style={styles.weatherInfoText}>
+                {""} {windSpeed} m/s
+              </Text>
+            </View>
+          </Surface>
+        </Card.Content>
 
-      <Card.Content style={{ flexDirection: "row", alignItems: "center" }}>
-        <Surface style={styles.surface}>
-          <Text style={styles.weatherInfoText}>
-            Temp: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp)}°C
-          </Text>
-          <Text style={styles.weatherInfoText}>
-            Feels like: {dataConversion.kelvinToCelsius(weather?.main?.feels_like)}°C
-          </Text>
-        </Surface>
-        <Surface style={styles.surface}>
+        <Surface style={styles.Surface2}>
           <View style={styles.weatherInfoItem}>
-            <Icon
-              name="thermometer-three-quarters"
-              style={styles.weatherIcon}
-            />
+            <Icon2 name="sunrise" style={styles.weatherIcon} />
             <Text style={styles.weatherInfoText}>
-              Max: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp_max)}°C
+              Sunrise: {dataConversion.formatTime(sunrise)}
             </Text>
           </View>
           <View style={styles.weatherInfoItem}>
-            <Icon name="thermometer-quarter" style={styles.weatherIcon} />
+            <Icon2 name="sunset" style={styles.weatherIcon} />
             <Text style={styles.weatherInfoText}>
-              Min: {dataConversion.kelvinToCelsius(weatherForcast?.[0]?.main?.temp_min)}°C
-            </Text>
-          </View>
-        </Surface>
-        <Surface style={styles.surface}>
-          <View style={styles.weatherInfoItem}>
-            <Icon name="tint" style={styles.weatherIcon} />
-            <Text style={styles.weatherInfoText}>
-              {""} {weatherForcast?.[0]?.main?.humidity}%
-            </Text>
-          </View>
-          <View style={styles.weatherInfoItem}>
-            <Icon2 name="wind" style={styles.weatherIcon} />
-            <Text style={styles.weatherInfoText}>
-              {""} {weatherForcast?.[0]?.wind?.speed} m/s
+              Sunset: {dataConversion.formatTime(sunset)}
             </Text>
           </View>
         </Surface>
-      </Card.Content>
 
-      <Surface style={styles.Surface2}>
-        <View style={styles.weatherInfoItem}>
-          <Icon2 name="sunrise" style={styles.weatherIcon} />
-          <Text style={styles.weatherInfoText}>
-            Sunrise: {dataConversion.formatTime(weather?.sys?.sunrise)}
-          </Text>
-        </View>
-        <View style={styles.weatherInfoItem}>
-          <Icon2 name="sunset" style={styles.weatherIcon} />
-          <Text style={styles.weatherInfoText}>
-            Sunset: {dataConversion.formatTime(weather?.sys?.sunset)}
-          </Text>
-        </View>
-      </Surface>
-
-      <Card.Actions>
-        <Button>+</Button>
-      </Card.Actions>
-    </Card>
+        <Card.Actions>
+          <IconButton
+            icon="bookmark-plus"
+            iconColor="white"
+            size={30}
+            onPress={handleSaveClick}
+          />
+        </Card.Actions>
+      </Card>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   surface: {
     padding: 5,
-    height: 70,
+    height: 120,
     width: 120,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     backgroundColor: "transparent",
   },
   Surface2: {
@@ -128,12 +178,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "transparent",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "white",
   },
 
   weatherInfoItem: {
@@ -151,10 +195,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "white",
     marginRight: 5,
-  },
-  description: {
-    fontSize: 16,
-    color: "white",
   },
 });
 

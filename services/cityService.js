@@ -1,19 +1,7 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class CityService {
-  // getCity() {
-  //   const options = {
-  //     method: "GET",
-  //     url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
-  //     headers: {
-  //       "X-RapidAPI-Key": "f771704608mshcb0b5723129d1f8p14e72djsn47ffb5452c67",
-  //       "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
-  //     },
-  //   };
-  //   const response = axios.request(options);
-  //   console.log(response.data);
-  // }
-
   getCityDetails(cityName) {
     const options = {
       method: "GET",
@@ -39,9 +27,7 @@ class CityService {
 
     return axios.get(
       `http://api.openweathermap.org/data/2.5/forecast?lat=${city?.latitude}&lon=${city?.longitude}&appid=${apikey}`
-
-
-    )
+    );
   }
 
   getLocalCityWeather(lat, lon) {
@@ -50,6 +36,65 @@ class CityService {
     return axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lon}&lon=${lat}&appid=${apikey}`
     );
+  }
+
+  getCityWeatherIcon(icon) {
+    return `http://openweathermap.org/img/wn/${icon}.png`;
+  }
+
+  async addCityToFavorites(cityName) {
+    try {
+      // Retrieve existing favorite cities or initialize an empty array
+      const existingFavoriteCitiesJson = await AsyncStorage.getItem(
+        "favoriteCities"
+      );
+      let existingFavoriteCities = existingFavoriteCitiesJson
+        ? JSON.parse(existingFavoriteCitiesJson)
+        : [];
+
+      // If existingFavoriteCities is not an array (e.g., it's null or undefined), initialize it as an empty array
+      if (!Array.isArray(existingFavoriteCities)) {
+        existingFavoriteCities = [];
+      }
+
+      // Add the new city name to the array if it's not already in the list
+      if (!existingFavoriteCities.includes(cityName)) {
+        existingFavoriteCities.push(cityName);
+
+        // Save updated array back to AsyncStorage
+        await AsyncStorage.setItem(
+          "favoriteCities",
+          JSON.stringify(existingFavoriteCities)
+        );
+
+        console.log("City added to favorites successfully!");
+      } else {
+        console.log("City is already in favorites.");
+      }
+    } catch (error) {
+      console.error("Error adding city to favorites:", error);
+    }
+  }
+
+  async removeFromFavorites(cityName) {
+    try {
+      // Get favoriteCities from AsyncStorage
+      const favoriteCitiesString = await AsyncStorage.getItem("favoriteCities");
+
+      // Parse favoriteCities into an array
+      let favoriteCities = JSON.parse(favoriteCitiesString) || [];
+
+      // Filter out the cityName from the array
+      favoriteCities = favoriteCities.filter((city) => city !== cityName);
+
+      // Save updated favoriteCities back to AsyncStorage
+      await AsyncStorage.setItem(
+        "favoriteCities",
+        JSON.stringify(favoriteCities)
+      );
+    } catch (error) {
+      console.error("Error removing city from favorites:", error);
+    }
   }
 }
 

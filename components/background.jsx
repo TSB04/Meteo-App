@@ -1,25 +1,32 @@
 import React from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet, View } from "react-native";
+import getBackgroundImage from "../services/backgrdService";
 
-const Background = ({ children }) => {
-    
+const Background = ({ children, iconCode }) => {
+  
   return (
-    <ImageBackground
-      source={require("../assets/night-with-clouds-weather-app-screen-mobile-interface-design-forecast-weather-background-time-concept-vector-banner_87946-4287.avif")}
-      style={styles.background}
-    >
-      {children}
-    </ImageBackground>
+    <View style={styles.container}>
+      <ImageBackground
+        source={getBackgroundImage(iconCode)}
+        style={styles.background}
+      >
+        {children}
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        resizeMode: "cover", // Make sure the background image covers the entire container
-        // alignItems: "center",
-      },
-})
-
+  container: {
+    flex: 1,
+  },
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-around",
+  },
+});
 
 export default Background;
