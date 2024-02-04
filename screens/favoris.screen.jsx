@@ -13,12 +13,15 @@ import CustomCard from "../components/card";
 import cityService from "../services/cityService";
 import { Badge } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
+import SnackBar from "../components/snackBar";
 
 const FavorisScreen = () => {
   const navigation = useNavigation();
   const [cityDetails, setCityDetails] = useState(null);
   const [weatherForcast, setWeatherForcast] = useState(null);
   const [favoriteCities, setFavoriteCities] = useState([]);
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
 
   // Function to load favorite cities from AsyncStorage
   const loadFavoriteCities = useCallback(async () => {
@@ -77,7 +80,9 @@ const FavorisScreen = () => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "rgba(150, 150,150, 0.8)" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "rgba(150, 150,150, 0.8)" }}
+    >
       <View style={{ flex: 1 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           Favorite Cities
@@ -93,6 +98,9 @@ const FavorisScreen = () => {
                 temp={weatherForcast?.[item]?.[0]?.main.temp}
                 humidity={weatherForcast?.[item]?.[0]?.main.humidity}
                 iconCode={weatherForcast?.[item]?.[0]?.weather[0]?.icon}
+                description={
+                  weatherForcast?.[item]?.[0]?.weather[0].description
+                }
               />
 
               <TouchableOpacity
@@ -104,8 +112,14 @@ const FavorisScreen = () => {
                       (city) => city !== item
                     );
                     setFavoriteCities(updatedCities);
+                    setSnackBarMessage(
+                      `${item} has been removed from favorites`
+                    );
+                    setSnackBarVisible(true);
                   } catch (error) {
-                    console.error("Error removing city from favorites:", error);
+                    console.error(error);
+                    setSnackBarMessage(error);
+                    setSnackBarVisible(true);
                   }
                 }}
               >
@@ -117,6 +131,11 @@ const FavorisScreen = () => {
           )}
         />
       </View>
+      <SnackBar
+        message={snackBarMessage}
+        setVisible={setSnackBarVisible}
+        visible={snackBarVisible}
+      />
     </SafeAreaView>
   );
 };

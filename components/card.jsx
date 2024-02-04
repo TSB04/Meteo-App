@@ -13,6 +13,7 @@ const CustomCard = ({
   humidity,
   iconCode,
   city,
+  description,
   isFavoritesScreen,
 }) => {
   const styles = StyleSheet.create({
@@ -92,6 +93,7 @@ const CustomCard = ({
           <Text style={styles.text}> {humidity}</Text>
         </View>
       </Card.Content>
+      {isFavoritesScreen && <Text style={styles.text}>{description}</Text>}
     </ImageBackground>
   );
 };

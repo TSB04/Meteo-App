@@ -7,6 +7,7 @@ import CardContainer from "../components/cardContainer";
 import Background from "../components/background";
 import MainCard from "../components/mainCard";
 import { View } from "react-native";
+import SnackBar from "../components/snackBar";
 
 function HomeScreen() {
   const [cityDetails, setCityDetails] = useState(null);
@@ -37,13 +38,13 @@ function HomeScreen() {
   };
 
   return (
-    <Background>
+    <Background iconCode={weatherForcast?.[0]?.weather[0]?.icon}>
       <CustomSearchbar onSearch={handleOnSearch} />
-      <View style={{flex: 1, justifyContent: "center"}}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
         {loading && <ActivityIndicator color="white" size="large" />}
 
         {!loading && (
-          <View style={{flex: 1, justifyContent: "space-between"}}>
+          <View style={{ flex: 1, justifyContent: "space-between" }}>
             <MainCard
               cityName={cityDetails?.name}
               description={weatherForcast?.[0]?.weather[0]?.description}
@@ -86,6 +87,7 @@ function HomeScreen() {
           </View>
         )}
       </View>
+      <SnackBar />
     </Background>
   );
 }
