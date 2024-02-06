@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomSearchbar from "../components/searchBar";
 import cityService from "../services/cityService";
 import { ActivityIndicator } from "react-native-paper";
@@ -14,6 +14,29 @@ function HomeScreen() {
   const [weather, setWeather] = useState(null);
   const [weatherForcast, setWeatherForcast] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Function to fetch weather data based on user's current location
+    const fetchWeatherDataByLocation = async () => {
+      try {
+        // Get current position using geolocation API
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+          // Fetch current weather based on latitude and longitude
+          
+          const cityWeather = await cityService.getCityWeather({ latitude, longitude });
+          setWeather(cityWeather);
+          setLoading(false); // Set loading to false after data is fetched
+        });
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+        setLoading(false); // Set loading to false even if there's an error
+      }
+    };
+
+    // Call the function to fetch weather data by location
+    fetchWeatherDataByLocation();
+  }, []);
 
   const handleOnSearch = async (e) => {
     setLoading(true);

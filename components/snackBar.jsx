@@ -27,7 +27,7 @@ const SnackBar = ({ message, visible, setVisible }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: -40,
+    bottom: -10,
     left: 0,
     right: 0,
     zIndex: 10,
