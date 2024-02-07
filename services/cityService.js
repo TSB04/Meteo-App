@@ -22,7 +22,7 @@ class CityService {
     );
   }
 
-  getCityWeatherForcast(city) {
+  getCityWeatherForecast(city) {
     const apikey = "375703f2b2811efd7bd2d2a9f77682b7";
 
     return axios.get(
@@ -30,13 +30,21 @@ class CityService {
     );
   }
 
-  getLocalCityWeather(lat, lon) {
-    const apikey = "375703f2b2811efd7bd2d2a9f77682b7";
+  // getLocalCityWeather(lat, lon) {
+  //   const apikey = "375703f2b2811efd7bd2d2a9f77682b7";
 
-    return axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lon}&lon=${lat}&appid=${apikey}`
-    );
-  }
+  //   return axios.get(
+  //     `https://api.openweathermap.org/data/2.5/weather?lat=${lon}&lon=${lat}&appid=${apikey}`
+  //   );
+  // }
+
+  // getLocalCityWeatherForcast(lat, lon) {
+  //   const apikey = "375703f2b2811efd7bd2d2a9f77682b7";
+
+  //   return axios.get(
+  //     `http://api.openweathermap.org/data/2.5/forecast?lat=${lon}&lon=${lat}&appid=${apikey}`
+  //   );
+  // }
 
   getCityWeatherIcon(icon) {
     return `http://openweathermap.org/img/wn/${icon}.png`;
